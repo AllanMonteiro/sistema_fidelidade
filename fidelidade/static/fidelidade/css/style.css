@@ -1,0 +1,121 @@
+/* Corpo da página */
+body {
+    background-color: #f0f8f5; /* branco esverdeado */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1b3a2f;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #2e7d32 !important; /* verde escuro */
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.navbar-brand img {
+    border-radius: 8px;
+    max-height: 50px;
+}
+
+/* Cards */
+.card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Botões */
+.btn-success {
+    background-color: #4caf50; /* verde */
+    border-color: #4caf50;
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    background-color: #388e3c;
+    border-color: #388e3c;
+}
+
+.btn-warning {
+    background-color: #ffb300;
+    border-color: #ffb300;
+    color: #ffffff;
+}
+
+.btn-danger {
+    background-color: #d32f2f;
+    border-color: #d32f2f;
+    color: #ffffff;
+}
+
+.btn-info {
+    background-color: #26a69a;
+    border-color: #26a69a;
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    border-color: #4caf50;
+    color: #4caf50;
+}
+
+.btn-secondary:hover {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+/* Tabelas */
+.table th {
+    background-color: #2e7d32; /* verde escuro */
+    color: #ffffff;
+}
+
+.table tbody tr {
+    background-color: #ffffff;
+}
+
+.table tbody tr:hover {
+    background-color: #e8f5e9; /* verde clarinho */
+}
+
+/* Alertas */
+.alert-success {
+    background-color: #a5d6a7;
+    color: #1b3a2f;
+}
+
+.alert-danger {
+    background-color: #ef9a9a;
+    color: #a31b1b;
+}
+
+.alert-warning {
+    background-color: #ffe082;
+    color: #7b5e00;
+}
+
+/* Formulários */
+.form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #4caf50;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #1b3a2f;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+    color: #2e7d32;
+}
