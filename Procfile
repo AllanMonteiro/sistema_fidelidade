@@ -1,0 +1,1 @@
+web: gunicorn frutos.wsgi --log-file -

@@ -1,19 +1,33 @@
 import os
-from pathlib import Path
 import dj_database_url
+from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
-# Caminho base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Segurança
+# 🔑 Secret Key
 SECRET_KEY = os.getenv("SECRET_KEY", get_random_secret_key())
-DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# Liberar acesso no Render
+# 🌍 Detectar ambiente
+ENV = os.getenv("ENV", "local")  # "local" por padrão, mas pode ser "production"
+DEBUG = ENV == "local"
+
+# 🖥️ Hosts
 ALLOWED_HOSTS = ["*"]
 
-# Aplicativos instalados
+# Render
+RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    DEBUG = False
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+
+# Heroku
+HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")
+if HEROKU_APP_NAME:
+    DEBUG = False
+    ALLOWED_HOSTS.append(f"{HEROKU_APP_NAME}.herokuapp.com")
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,12 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fidelidade',  # seu app
+    'fidelidade',
 ]
 
-# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -35,7 +49,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'sistema_fidelidade.urls'
+ROOT_URLCONF = 'frutos.urls'
+WSGI_APPLICATION = 'frutos.wsgi.application'
 
 TEMPLATES = [
     {
@@ -53,12 +68,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'sistema_fidelidade.wsgi.application'
-
-# Banco de dados
+# 🗄️ Banco de Dados
 if os.getenv("DATABASE_URL"):
     DATABASES = {
-        'default': dj_database_url.parse(os.getenv("DATABASE_URL"), conn_max_age=600)
+        'default': dj_database_url.parse(
+            os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
 else:
     DATABASES = {
@@ -68,7 +85,6 @@ else:
         }
     }
 
-# Validações de senha
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -76,22 +92,28 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Idioma e fuso horário
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# Arquivos estáticos
+# 📂 Arquivos estáticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Arquivos de mídia (se precisar no futuro)
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Configuração do Render (ajuste para produção)
+# 🔒 Configurações extras só em produção
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("RENDER_EXTERNAL_HOSTNAME", "")]
+    CSRF_TRUSTED_ORIGINS = []
+
+    if RENDER_EXTERNAL_HOSTNAME:
+        CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
+    if HEROKU_APP_NAME:
+        CSRF_TRUSTED_ORIGINS.append(f"https://{HEROKU_APP_NAME}.herokuapp.com")
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
