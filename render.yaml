@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: sistema-fidelidade
+    name: sistema_fidelidade
     env: python
     plan: free
     buildCommand: |
