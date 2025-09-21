@@ -9,7 +9,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ===========================================
 SECRET_KEY = "django-insecure-coloque-uma-chave-forte-aqui"
 DEBUG = True  # em produção, coloque False
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+ALLOWED_HOSTS = [
+    "sistema-fidelidade-1.onrender.com",  # domínio do Render
+    "127.0.0.1",  # para rodar local
+    "localhost",  # para rodar local
+]
+
 
 # ===========================================
 # Aplicativos
