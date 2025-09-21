@@ -1,0 +1,21 @@
+{% extends "fidelidade/base.html" %}
+
+{% block title %}Cadastro de Recompensa{% endblock %}
+
+{% block content %}
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-warning text-dark">
+        <h4 class="mb-0">Cadastro de Recompensa</h4>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-flex justify-content-end mt-3">
+                <a href="{% url 'fidelidade:recompensas_list' %}" class="btn btn-secondary me-2">⬅ Voltar</a>
+                <button type="submit" class="btn btn-warning text-dark">💾 Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

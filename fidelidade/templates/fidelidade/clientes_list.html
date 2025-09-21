@@ -1,0 +1,46 @@
+{% extends "fidelidade/base.html" %}
+
+{% block title %}Clientes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary">Clientes</h2>
+    <a href="{% url 'fidelidade:clientes_create' %}" class="btn btn-success">
+        ➕ Novo Cliente
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Bairro</th>
+                    <th>Pontos</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <td>{{ cliente.bairro }}</td>
+                    <td><span class="badge bg-success">{{ cliente.pontos }}</span></td>
+                    <td class="text-center">
+                        <a href="{% url 'fidelidade:clientes_update' cliente.pk %}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                        <a href="{% url 'fidelidade:clientes_delete' cliente.pk %}" class="btn btn-sm btn-danger">🗑 Excluir</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Nenhum cliente cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "fidelidade/base.html" %}
+{% load static %}
+
+{% block title %}Início - Sistema Fidelidade{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="mb-3">🍧 Bem-vindo ao Sistema de Fidelidade Frutos de Goiás 🌱</h1>
+    <p class="lead text-muted">Gerencie clientes, acompanhe compras e distribua recompensas de forma simples e moderna.</p>
+
+
+<div class="row text-center">
+    <!-- Card Clientes -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">👥 Clientes</h3>
+                <p class="card-text">Cadastre e gerencie todos os clientes do sistema de fidelidade.</p>
+                <a href="{% url 'fidelidade:clientes_list' %}" class="btn btn-primary">Ver Clientes</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Compras -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">🛒 Compras</h3>
+                <p class="card-text">Registre compras e acumule pontos automaticamente para os clientes.</p>
+                <a href="{% url 'fidelidade:compras_list' %}" class="btn btn-primary">Ver Compras</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Recompensas -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">🎁 Recompensas</h3>
+                <p class="card-text">Cadastre e entregue recompensas em troca dos pontos acumulados.</p>
+                <a href="{% url 'fidelidade:recompensas_list' %}" class="btn btn-primary">Ver Recompensas</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

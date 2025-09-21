@@ -8,6 +8,8 @@ class ClienteAdmin(admin.ModelAdmin):
     search_fields = ('nome', 'telefone', 'bairro')
     list_filter = ('bairro',)
     ordering = ('nome',)
+    list_per_page = 20
+    readonly_fields = ('id',)
 
 
 @admin.register(Recompensa)
@@ -15,3 +17,5 @@ class RecompensaAdmin(admin.ModelAdmin):
     list_display = ('id', 'nome', 'pontos_necessarios')
     search_fields = ('nome',)
     ordering = ('pontos_necessarios',)
+    list_per_page = 20
+    readonly_fields = ('id',)

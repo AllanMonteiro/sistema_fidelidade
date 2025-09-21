@@ -1,0 +1,20 @@
+{% extends "fidelidade/base.html" %}
+
+{% block title %}Cadastro de Cliente{% endblock %}
+
+{% block content %}
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Cadastro de Cliente</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-flex justify-content-end mt-3">
+                <a href="{% url 'fidelidade:clientes_list' %}" class="btn btn-secondary me-2">⬅ Voltar</a>
+                <button type="submit" class="btn btn-primary">💾 Salvar</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

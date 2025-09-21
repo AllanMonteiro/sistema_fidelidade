@@ -1,0 +1,48 @@
+{% extends "fidelidade/base.html" %}
+
+{% block title %}Compras{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-success">Compras</h2>
+    <a href="{% url 'fidelidade:compras_create' %}" class="btn btn-primary">
+        ➕ Nova Compra
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-success">
+                <tr>
+                    <th>Cliente</th>
+                    <th>Valor</th>
+                    <th>Pontos Usados</th>
+                    <th>Recompensa</th>
+                    <th>Data</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for compra in compras %}
+                <tr>
+                    <td>{{ compra.cliente.nome }}</td>
+                    <td>R$ {{ compra.valor_compra }}</td>
+                    <td>{{ compra.pontos_usados }}</td>
+                    <td>{{ compra.recompensa.nome|default:"-" }}</td>
+                    <td>{{ compra.data|date:"d/m/Y H:i" }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'fidelidade:compras_update' compra.pk %}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                        <a href="{% url 'fidelidade:compras_delete' compra.pk %}" class="btn btn-sm btn-danger">🗑 Excluir</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Nenhuma compra registrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

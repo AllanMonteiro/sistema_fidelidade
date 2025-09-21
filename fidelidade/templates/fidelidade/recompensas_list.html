@@ -1,0 +1,44 @@
+{% extends "fidelidade/base.html" %}
+
+{% block title %}Recompensas{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-warning">Recompensas</h2>
+    <a href="{% url 'fidelidade:recompensas_create' %}" class="btn btn-primary">
+        ➕ Nova Recompensa
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-warning">
+                <tr>
+                    <th>Nome</th>
+                    <th>Pontos Necessários</th>
+                    <th>Descrição</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recompensa in recompensas %}
+                <tr>
+                    <td>{{ recompensa.nome }}</td>
+                    <td><span class="badge bg-info">{{ recompensa.pontos_necessarios }}</span></td>
+                    <td>{{ recompensa.descricao|default:"-" }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'fidelidade:recompensas_update' recompensa.pk %}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                        <a href="{% url 'fidelidade:recompensas_delete' recompensa.pk %}" class="btn btn-sm btn-danger">🗑 Excluir</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">Nenhuma recompensa cadastrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

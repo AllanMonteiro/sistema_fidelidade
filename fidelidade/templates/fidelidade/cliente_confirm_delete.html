@@ -1,0 +1,19 @@
+{% extends "fidelidade/base.html" %}
+
+{% block title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body text-center">
+            <h4 class="mb-3">Tem certeza que deseja excluir este registro?</h4>
+            <p><strong>{{ object }}</strong></p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Excluir</button>
+                <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

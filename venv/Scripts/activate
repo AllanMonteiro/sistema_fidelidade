@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\ocmad\OneDrive\Área de Trabalho\app\sistema_fidelidade\venv"
+VIRTUAL_ENV="C:\Users\ocmad\OneDrive\Área de Trabalho\sistema_fidelidade\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
