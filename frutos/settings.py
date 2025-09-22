@@ -1,43 +1,36 @@
+import sys
 import os
+import dj_database_url
 from pathlib import Path
 
-# Diretório base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ===========================================
+# ==============================
 # Segurança
-# ===========================================
-SECRET_KEY = "django-insecure-coloque-uma-chave-forte-aqui"
-DEBUG = True  # em produção, coloque False
+# ==============================
+SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")  # Render gera automático
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+ALLOWED_HOSTS = ["*"]  # em produção, restrinja ao domínio do Render
 
-ALLOWED_HOSTS = [
-    "sistema-fidelidade-1.onrender.com",  # domínio do Render
-    "127.0.0.1",  # para rodar local
-    "localhost",  # para rodar local
-]
-
-
-# ===========================================
-# Aplicativos
-# ===========================================
+# ==============================
+# Apps
+# ==============================
 INSTALLED_APPS = [
-    # Django apps padrão
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    # Seu app
-    "fidelidade",
+    "fidelidade",  # seu app
 ]
 
-# ===========================================
+# ==============================
 # Middleware
-# ===========================================
+# ==============================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # serve staticfiles no Render
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -46,15 +39,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# ===========================================
-# URLs e WSGI
-# ===========================================
 ROOT_URLCONF = "frutos.urls"
 
+# ==============================
+# Templates
+# ==============================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # se usar pasta global de templates
+        "DIRS": [BASE_DIR / "templates"],  # templates globais
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,53 +62,51 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "frutos.wsgi.application"
 
-# ===========================================
-# Banco de Dados (SQLite para aprendizado)
-# ===========================================
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+# ==============================
+# Banco de Dados
+# ==============================
+if os.environ.get("DATABASE_URL"):  # Produção → Render Postgres
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.environ["DATABASE_URL"],
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-}
+else:  # Desenvolvimento local → SQLite
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
-# ===========================================
-# Autenticação
-# ===========================================
+# ==============================
+# Validação de senha
+# ==============================
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# ===========================================
+# ==============================
 # Internacionalização
-# ===========================================
+# ==============================
 LANGUAGE_CODE = "pt-br"
 TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
 USE_TZ = True
 
-# ===========================================
-# Arquivos estáticos e mídia
-# ===========================================
+# ==============================
+# Arquivos estáticos
+# ==============================
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"    # usado em produção (collectstatic)
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
-# ===========================================
-# Padrão Django
-# ===========================================
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+print("=== DATABASE CONFIGURATION ===", file=sys.stderr)
+print(DATABASES, file=sys.stderr)
