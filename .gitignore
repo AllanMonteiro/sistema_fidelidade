@@ -1,21 +1,21 @@
-# Arquivos do Python
-__pycache__/
+# Python
 *.pyc
+__pycache__/
 *.pyo
 *.pyd
+*.db
+*.sqlite3
 
-# Banco de dados local
-db.sqlite3
-
-# Virtual env
+# Ambiente virtual
 .venv/
-venv/
+env/
 
-# Configurações do VS Code
+# Config
+*.env
+
+# VS Code
 .vscode/
 
-# Arquivos do sistema
-*.log
-*.pot
-*.pyc
-*.mo
+# Django static/media
+staticfiles/
+media/
